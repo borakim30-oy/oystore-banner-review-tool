@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     
     <style>
         /* =========================================
@@ -16,23 +15,23 @@
            ========================================= */
         :root {
             --primary: #3D5AFE;
-            --success: #059669; /* Slightly darker/modern green */
-            --warning: #D97706; /* Modern amber/orange */
-            --error: #DC2626;   /* Modern red */
+            --success: #43A047;
+            --warning: #F57C00;
+            --error: #E53A36;
             
-            --text-primary: #111827;
-            --text-secondary: #4B5563;
-            --text-tertiary: #9CA3AF;
+            --text-primary: #262937;
+            --text-secondary: #525565;
+            --text-disabled: #9D9FAD;
             
-            --bg-body: #F3F4F6;
-            --bg-panel: #FFFFFF;
-            --bg-input: #F9FAFB;
+            --bg: #FAFAFA;
+            --surface: #FFFFFF;
+            --divider: #E0E0E0;
             
-            --divider: #E5E7EB;
-            --border-input: #D1D5DB;
+            --btn-primary: #262937;
+            --btn-secondary: #9D9FAD;
+            --btn-accent: #3D5AFE;
             
-            --radius-md: 8px;
-            --radius-lg: 12px;
+            --radius: 12px;
             --spacing: 8px;
         }
 
@@ -42,579 +41,262 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Pretendard', sans-serif;
-            background-color: var(--bg-body);
+            background-color: var(--bg);
             color: var(--text-primary);
-            line-height: 1.5;
+            line-height: 1.6;
             font-size: 14px;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
+            padding: calc(var(--spacing) * 4);
         }
-
-        /* Custom Scrollbar for sleekness */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }
-
-        /* Header */
-        header {
-            height: 56px;
-            background: var(--bg-panel);
-            border-bottom: 1px solid var(--divider);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 24px;
-            flex-shrink: 0;
-            z-index: 10;
-        }
-        header h1 { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-        header h1 i { color: var(--primary); font-size: 20px; }
+        h1 { font-size: 32px; line-height: 1.3; margin-bottom: calc(var(--spacing) * 3); text-align: center; }
+        h2 { font-size: 24px; line-height: 1.3; margin-bottom: calc(var(--spacing) * 2); }
+        h3 { font-size: 20px; line-height: 1.3; margin-bottom: calc(var(--spacing) * 2); }
+        p.desc { font-size: 12px; color: var(--text-secondary); margin-bottom: calc(var(--spacing) * 1); }
         
-        /* Info 아이콘 & 툴팁 */
-        .info-icon-container {
-            position: relative;
-        }
+        .container { max-width: 900px; margin: 0 auto; }
         
-        .info-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            font-size: 18px;
-            color: #9D9FAD;
-            background: rgba(224, 225, 232, 0.4);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .info-icon:hover {
-            color: #525565;
-            background: rgba(224, 225, 232, 0.7);
-            border-color: var(--border);
-        }
-        
-        .info-tooltip {
-            position: absolute;
-            top: 36px;
-            right: 0;
-            background: var(--text-primary);
-            color: white;
-            padding: 16px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            font-size: 13px;
-            line-height: 1.5;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
-            z-index: 1000;
-        }
-        
-        .info-icon-container:hover .info-tooltip {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* Main App Layout */
-        .app-container {
-            display: flex;
-            flex: 1;
-            overflow-x: auto;
-            overflow-y: hidden;
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: calc(var(--spacing) * 3);
+            margin-bottom: calc(var(--spacing) * 3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid var(--divider);
         }
 
         /* =========================================
-           Left Panel (Controls / Inputs)
+           Tabs
            ========================================= */
-        .left-panel {
-            width: 360px;
-            min-width: 360px;
-            background: var(--bg-panel);
-            border-right: 1px solid var(--divider);
-            display: flex;
-            flex-direction: column;
-            padding: 24px;
-            overflow-y: auto;
-            flex-shrink: 0;
+        .tabs { display: flex; gap: calc(var(--spacing) * 1); margin-bottom: calc(var(--spacing) * 3); }
+        .tab-btn {
+            flex: 1; padding: calc(var(--spacing) * 2); font-size: 16px; font-weight: bold;
+            border: 1px solid var(--divider); border-radius: var(--radius);
+            background: var(--surface); color: var(--text-disabled); cursor: pointer;
+            transition: all 0.2s; text-align: center;
+        }
+        .tab-btn.active {
+            background: var(--primary); color: #FFF; border-color: var(--primary);
         }
 
-        /* Segmented Control (Tabs) */
-        .segment-control {
-            display: flex;
-            background: var(--bg-body);
-            padding: 4px;
-            border-radius: var(--radius-md);
-            margin-bottom: 24px;
-        }
-        .segment-btn {
-            flex: 1;
-            padding: 8px 8px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            background: transparent;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-        .segment-btn.active {
-            background: var(--bg-panel);
-            color: var(--primary);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .section-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--text-primary); }
-        .section-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; word-break: keep-all; }
-
-        /* Upload Zone */
+        /* =========================================
+           Upload Zone
+           ========================================= */
         .dropzone {
-            border: 2px dashed #D1D5DB;
-            border-radius: var(--radius-lg);
-            padding: 32px 16px;
-            text-align: center;
-            cursor: pointer;
-            background: #F9FAFB;
-            transition: all 0.2s;
-            margin-bottom: 24px;
+            border: 2px dashed var(--divider); border-radius: var(--radius);
+            padding: calc(var(--spacing) * 6); text-align: center; cursor: pointer;
+            transition: all 0.2s; background: var(--bg);
         }
-        .dropzone:hover { 
-            border-color: var(--primary); 
-            background: rgba(61, 90, 254, 0.05); 
-        }
-        .dropzone.dragover { 
-            border-color: var(--primary); 
-            background: rgba(61, 90, 254, 0.05); 
-        }
-        .dropzone i { font-size: 32px; color: var(--text-tertiary); margin-bottom: 8px; transition: color 0.2s; }
-        .dropzone:hover i, .dropzone.dragover i { color: var(--primary); }
-        .dropzone p { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
-        .dropzone span { font-size: 11px; color: var(--text-tertiary); display: block; margin-top: 4px; }
+        .dropzone:hover, .dropzone.dragover { border-color: var(--primary); background: rgba(61, 90, 254, 0.05); }
+        .dropzone i { font-size: 48px; color: var(--text-disabled); margin-bottom: var(--spacing); }
+        .dropzone p { font-size: 16px; font-weight: 500; color: var(--text-primary); }
         #file-input { display: none; }
 
-        /* Input Fields */
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-primary); }
-        .input-group input {
-            width: 100%; padding: 10px 12px; border: 1px solid var(--border-input);
-            border-radius: var(--radius-md); font-size: 13px; font-family: inherit;
-            background: var(--bg-input); transition: all 0.2s;
+        /* =========================================
+           Validation Result List
+           ========================================= */
+        .result-list { list-style: none; }
+        .result-item {
+            display: flex; align-items: center; padding: calc(var(--spacing) * 1.5);
+            border-bottom: 1px solid var(--divider); font-weight: 500;
         }
-        .input-group input:focus { outline: none; border-color: var(--primary); background: var(--bg-panel); box-shadow: 0 0 0 3px rgba(61,90,254,0.1); }
-        .char-count { display: flex; justify-content: space-between; font-size: 11px; margin-top: 6px; }
+        .result-item:last-child { border-bottom: none; }
+        .result-item i { margin-right: calc(var(--spacing) * 1.5); font-size: 20px; }
+        .status-success i { color: var(--success); }
+        .status-warning i { color: var(--warning); }
+        .status-error i { color: var(--error); }
+
+        /* =========================================
+           Safe Area Visualizer (Banner)
+           ========================================= */
+        .visualizer { position: relative; width: 100%; max-width: 690px; margin: 0 auto; overflow: hidden; border-radius: 8px; border: 1px solid var(--divider); background: #eee; }
+        .visualizer img { display: block; width: 100%; height: auto; }
+        .safe-overlay { position: absolute; top: 0; bottom: 0; background: rgba(0,0,0,0.6); pointer-events: none; }
+        .safe-left { left: 0; width: 21.739%; /* 150/690 */ border-right: 1px dashed #fff; }
+        .safe-right { right: 0; width: 21.739%; border-left: 1px dashed #fff; }
+        .safe-center {
+            position: absolute; top: 0; bottom: 0; left: 21.739%; width: 56.521%; /* 390/690 */
+            display: flex; align-items: center; justify-content: center; pointer-events: none;
+        }
+        .safe-center span { background: rgba(0,0,0,0.5); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+
+        /* =========================================
+           Text Inputs (Gift)
+           ========================================= */
+        .input-group { margin-bottom: calc(var(--spacing) * 2); }
+        .input-group label { display: block; font-weight: bold; margin-bottom: calc(var(--spacing) * 1); }
+        .input-group input {
+            width: 100%; padding: calc(var(--spacing) * 1.5); border: 1px solid var(--divider);
+            border-radius: 8px; font-size: 14px; font-family: inherit; transition: border-color 0.2s;
+        }
+        .input-group input:focus { outline: none; border-color: var(--primary); }
+        .char-count { display: flex; justify-content: space-between; font-size: 12px; margin-top: 4px; }
         .count-success { color: var(--success); font-weight: bold; }
         .count-warning { color: var(--warning); font-weight: bold; }
         .count-error { color: var(--error); font-weight: bold; }
 
-        .dupe-warning {
-            font-size: 12px; font-weight: 600; color: var(--error); background: #FEF2F2;
-            padding: 10px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 6px;
-        }
-
         /* =========================================
-           Right Panel (Preview / Canvas)
+           Resolution Simulator (Gift)
            ========================================= */
-        .right-panel {
-            flex: 1;
-            min-width: 360px;
-            padding: 32px;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        .content-block {
-            background: var(--bg-panel);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            border: 1px solid var(--divider);
-        }
-        .content-block h2 { font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;}
-
-        /* Empty State */
-        .empty-state {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100%; min-height: 400px; color: var(--text-tertiary);
-        }
-        .empty-state i { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
-        .empty-state h3 { font-size: 16px; color: var(--text-secondary); margin-bottom: 4px; }
-        .empty-state p { font-size: 13px; }
-
-        /* Results List */
-        .result-item {
-            display: flex; align-items: flex-start; gap: 12px; padding: 12px 0;
-            border-bottom: 1px solid var(--divider); font-size: 14px;
-        }
-        .result-item:last-child { border-bottom: none; padding-bottom: 0; }
-        .result-item i { font-size: 18px; margin-top: 2px; }
-        .status-success i { color: var(--success); }
-        .status-warning i { color: var(--warning); }
-        .status-error i { color: var(--error); }
-        .result-text strong { display: block; font-weight: 600; color: var(--text-primary); margin-bottom: 2px;}
-        .result-text span { color: var(--text-secondary); font-size: 13px;}
-
-        /* Visualizer (Banner) */
-        .visualizer { position: relative; width: 100%; max-width: 690px; margin: 0 auto; overflow: hidden; border-radius: var(--radius-md); border: 1px solid var(--divider); background: var(--bg-input); }
-        .visualizer img { display: block; width: 100%; height: auto; }
-        .safe-overlay { position: absolute; top: 0; bottom: 0; background: rgba(0,0,0,0.6); pointer-events: none; }
-        .safe-left { left: 0; width: 21.739%; border-right: 1px dashed rgba(255,255,255,0.5); }
-        .safe-right { right: 0; width: 21.739%; border-left: 1px dashed rgba(255,255,255,0.5); }
-        .safe-center {
-            position: absolute; top: 0; bottom: 0; left: 21.739%; width: 56.521%;
-            display: flex; align-items: flex-end; justify-content: center; padding-bottom: 16px; pointer-events: none;
-        }
-        .safe-center span { background: rgba(0,0,0,0.7); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; backdrop-filter: blur(4px); }
-
-        /* Simulator (Gift) */
-        .sim-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+        .sim-buttons { display: flex; flex-wrap: wrap; gap: var(--spacing); margin-bottom: calc(var(--spacing) * 2); }
         .sim-btn {
-            padding: 6px 12px; font-size: 12px; font-weight: 600;
-            background: var(--bg-input); border: 1px solid var(--divider); color: var(--text-secondary);
+            padding: calc(var(--spacing) * 1) calc(var(--spacing) * 2); font-size: 14px;
+            background: var(--surface); border: 1px solid var(--btn-secondary); color: var(--text-primary);
             border-radius: 20px; cursor: pointer; transition: all 0.2s;
         }
-        .sim-btn:hover { background: var(--divider); color: var(--text-primary); }
-        .sim-btn.active { background: var(--text-primary); border-color: var(--text-primary); color: #fff; }
+        .sim-btn.active { background: var(--btn-accent); border-color: var(--btn-accent); color: #fff; }
         
-        .sim-wrapper { background: var(--bg-body); padding: 32px; border-radius: var(--radius-md); overflow-x: auto; border: 1px solid var(--divider) inset; }
-        .sim-device { background: #fff; border-radius: 0; box-shadow: 0 4px 24px rgba(0,0,0,0.08); transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid var(--divider); margin: 0 auto; flex-shrink: 0; }
-        .sim-header { background: var(--bg-input); padding: 8px; text-align: center; font-size: 11px; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--divider); }
-        .sim-content { display: flex; flex-direction: row; align-items: center; justify-content: center; padding: 24px 16px; gap: 12px; background: #FFFFFF; min-height: 200px; }
-        /* 바텀시트/매장행사 타입 전용 스타일 */
-        .sim-content.gift-sheet-type { justify-content: flex-start; padding: 24px 15px; }
-        .sim-content.gift-sheet-type .sim-img { width: 96px; height: 96px; }
-        .sim-img { width: 80px; height: 80px; background: #F6F7F9; border-radius: 4px; flex-shrink: 0; overflow: hidden; border: none; }
-        .sim-img img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; }
-        .sim-text { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; text-align: left; max-width: 300px; }
-        /* 바텀시트/매장행사 타입에서는 텍스트 영역 max-width 제거 */
-        .sim-content.gift-sheet-type .sim-text { max-width: none; }
+        .sim-wrapper { overflow-x: auto; background: var(--bg); padding: calc(var(--spacing) * 2); border-radius: 8px; border: 1px solid var(--divider); }
+        .sim-device { margin: 0 auto; background: var(--surface); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; transition: width 0.3s ease; }
+        .sim-header { background: #eee; padding: 8px; text-align: center; font-size: 12px; color: var(--text-secondary); border-bottom: 1px solid var(--divider); }
+        .sim-content { display: flex; padding: 16px; gap: 12px; }
+        .sim-img { width: 80px; height: 80px; background: #ddd; border-radius: 8px; flex-shrink: 0; overflow: hidden; }
+        .sim-img img { width: 100%; height: 100%; object-fit: cover; }
+        .sim-text { flex: 1; min-width: 0; }
         .sim-title { 
-            font-size: 15px; font-weight: 700; color: #111; line-height: 1.4; margin-bottom: 6px;
+            font-size: 15px; font-weight: bold; color: #000; line-height: 1.4; margin-bottom: 4px;
+            /* 2줄 말줄임 처리 핵심 CSS */
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; 
         }
-        .sim-body { font-size: 13px; color: #666; line-height: 1.4; white-space: pre-wrap; word-break: keep-all; margin-bottom: 4px; }
-        .sim-date { font-size: 13px; color: #666; line-height: 1.4; }
+        .sim-body { font-size: 13px; color: #666; line-height: 1.4; white-space: pre-wrap; word-break: keep-all; }
 
-        /* Final Summary & Checkboxes */
-        .summary-box { padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px; font-weight: 700; font-size: 15px; text-align: left; display: flex; align-items: center; justify-content: flex-start; gap: 8px;}
-        .summary-success { background: #ECFDF5; color: var(--success); border: 1px solid #A7F3D0; }
-        .summary-warning { background: #FFFBEB; color: var(--warning); border: 1px solid #FDE68A; }
-        .summary-error { background: #FEF2F2; color: var(--error); border: 1px solid #FECACA; }
-        
-        .summary-lists { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; font-size: 13px; }
-        .summary-lists div { padding: 10px 12px; border-radius: 6px; font-weight: 500; display: flex; gap: 8px; }
+        /* =========================================
+           Final Summary & Checkboxes
+           ========================================= */
+        .summary-box { padding: calc(var(--spacing) * 2); border-radius: 8px; margin-bottom: calc(var(--spacing) * 3); font-weight: bold; font-size: 16px; text-align: center; }
+        .summary-success { background: rgba(67, 160, 71, 0.1); color: var(--success); border: 1px solid var(--success); }
+        .summary-warning { background: rgba(245, 124, 0, 0.1); color: var(--warning); border: 1px solid var(--warning); }
+        .summary-error { background: rgba(229, 58, 54, 0.1); color: var(--error); border: 1px solid var(--error); }
+        .summary-lists { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; font-size: 14px; }
+        .summary-lists div { padding: 8px 12px; border-radius: 4px; }
 
-        .checkbox-group { display: flex; flex-direction: column; gap: 12px; background: var(--bg-input); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--divider);}
-        .checkbox-label { display: flex; align-items: flex-start; font-size: 13px; cursor: pointer; color: var(--text-primary); font-weight: 500;}
-        .checkbox-label input[type="checkbox"] { margin-right: 10px; margin-top: 2px; width: 16px; height: 16px; cursor: pointer; accent-color: var(--primary); flex-shrink: 0; }
+        .checkbox-group { display: flex; flex-direction: column; gap: calc(var(--spacing) * 1.5); }
+        .checkbox-label { display: flex; align-items: center; font-size: 14px; cursor: pointer; color: var(--text-primary); }
+        .checkbox-label input[type="checkbox"] { margin-right: 10px; width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
 
         .hidden { display: none !important; }
-        
-        /* 초기화 버튼 스타일 */
-        #reset-tab-btn:hover:not(:disabled) {
-            background: var(--hover) !important;
-            border-color: var(--text-secondary) !important;
-        }
-        
-        #reset-tab-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed !important;
-        }
-        
-        /* 토글 스위치 스타일 */
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-        }
-        
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #D1D5DB;
-            transition: 0.3s;
-            border-radius: 24px;
-        }
-        
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 2px;
-            bottom: 2px;
-            background-color: white;
-            transition: 0.3s;
-            border-radius: 50%;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        }
-        
-        .toggle-switch input:checked + .toggle-slider {
-            background-color: var(--primary);
-        }
-        
-        .toggle-switch input:checked + .toggle-slider:before {
-            transform: translateX(20px);
-        }
     </style>
 </head>
 <body>
 
-<!-- Header -->
-<header>
-    <h1><i class="material-icons">fact_check</i> 올영매장 배너 셀프 검수</h1>
-    <!-- Info 아이콘 -->
-    <div class="info-icon-container">
-        <i class="material-icons info-icon" id="info-icon">info</i>
-        <!-- 툴팁 -->
-        <div class="info-tooltip" id="info-tooltip">
-            <div style="font-weight: 700; margin-bottom: 4px;">bora kim / product designer</div>
-            <div style="margin-bottom: 12px;">커머스 프로덕트 디자인팀</div>
-            <div style="opacity: 0.5;">피드백은 슬랙으로 문의주세요.</div>
-            <div style="opacity: 0.5;">kbora715@gmail.com</div>
+<div class="container">
+    <h1>배너 셀프 검수 도구</h1>
+    
+    <!-- Tab Navigation -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('banner')" id="tab-banner">스토어 썸네일 (메인홈 배너)</button>
+        <button class="tab-btn" onclick="switchTab('gift')" id="tab-gift">증정품 이미지 + 텍스트</button>
+    </div>
+
+    <!-- 1. Upload Section -->
+    <div class="card" id="upload-card">
+        <h2>1. 이미지 업로드</h2>
+        <p class="desc" id="upload-desc">JPG, JPEG, PNG 파일만 업로드 가능합니다.</p>
+        <div class="dropzone" id="dropzone">
+            <i class="material-icons">cloud_upload</i>
+            <p>클릭하거나 이미지를 이곳으로 드래그 하세요.</p>
+            <input type="file" id="file-input" accept="image/jpeg, image/png, image/jpg">
         </div>
     </div>
-</header>
 
-<!-- App Layout -->
-<div class="app-container">
-    
-    <!-- =========================================
-         [좌측 패널] 컨트롤 & 입력 영역
-         ========================================= -->
-    <aside class="left-panel">
+    <!-- 2. Auto Validation Section -->
+    <div class="card hidden" id="validation-card">
+        <h2>2. 이미지 자동 규격 검수</h2>
+        <ul class="result-list" id="validation-list">
+            <!-- Dynamic items injected here -->
+        </ul>
+    </div>
+
+    <!-- 3. Safe Area Section (Banner Only) -->
+    <div class="card hidden" id="safe-area-card">
+        <h2>3. 오브젝트 안전 영역 안내</h2>
+        <p class="desc">좌우 150px 음영 영역은 세로형 크롭 시 잘릴 수 있습니다. 중앙 390px 안에 주요 텍스트와 오브젝트를 배치하세요.</p>
+        <div class="visualizer" id="visualizer">
+            <img id="visualizer-img" src="" alt="Uploaded Banner">
+            <div class="safe-overlay safe-left"></div>
+            <div class="safe-center"><span>안전 영역 (390px)</span></div>
+            <div class="safe-overlay safe-right"></div>
+        </div>
+    </div>
+
+    <!-- 4. Gift Text Input (Gift Only) -->
+    <div class="card hidden" id="text-input-card">
+        <h2>3. 증정품 문구 입력</h2>
+        <p class="desc">입력한 문구의 글자 수를 실시간으로 검수합니다. (공백 포함)</p>
         
-        <!-- 검수 카테고리 탭 (세그먼트 컨트롤) -->
-        <div class="segment-control">
-            <button class="segment-btn active" onclick="switchTab('banner')" id="tab-banner">스토어 썸네일</button>
-            <button class="segment-btn" onclick="switchTab('gift-interest')" id="tab-gift-interest">증정품 - 관심매장</button>
-            <button class="segment-btn" onclick="switchTab('gift-sheet')" id="tab-gift-sheet">증정품 - 프로모션</button>
-        </div>
-
-        <!-- 1. Upload Section -->
-        <div id="upload-section">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <div class="section-title" style="margin-bottom: 0;">이미지 업로드</div>
-                <button id="reset-tab-btn" onclick="resetCurrentTab()" disabled style="padding: 6px 12px; font-size: 13px; background: transparent; border: 1px solid var(--border); border-radius: 4px; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s;">
-                    <i class="material-icons" style="font-size: 16px;">refresh</i>
-                    초기화
-                </button>
-            </div>
-            <p class="section-desc" id="upload-desc">가로 690px, 세로 516px 규격의 이미지를 업로드해주세요.</p>
-            <div class="dropzone" id="dropzone">
-                <i class="material-icons">cloud_upload</i>
-                <p>클릭 또는 드래그하여 업로드</p>
-                <span>JPG, PNG (최대 300KB)</span>
-                <input type="file" id="file-input" accept="image/jpeg, image/png, image/jpg">
+        <div class="input-group">
+            <label>증정품 타이틀</label>
+            <input type="text" id="gift-title" placeholder="예: [단독] 올리브영 스페셜 기프트 세트" oninput="validateGiftText()">
+            <div class="char-count">
+                <span id="title-msg">권장: 30자 이하 / 최대: 40자</span>
+                <span id="title-count">0 / 40자</span>
             </div>
         </div>
 
-        <!-- 2. Text Input Section (Gift Only) -->
-        <div id="text-input-section" class="hidden">
-            <div class="section-title">증정품 타이틀 입력</div>
-            <p class="section-desc">모바일에서 증정품 타이틀이 어떻게 보일지 확인해주세요.</p>
-            
-            <div class="input-group">
-                <input type="text" id="gift-title" placeholder="예시: 올리브영 폴딩카트 굿즈" oninput="validateGiftText()">
-                <div class="char-count">
-                    <span id="title-msg">권장: 30자 / 최대: 40자</span>
-                    <span id="title-count">0 / 40자</span>
-                </div>
+        <div class="input-group">
+            <label>증정품 본문</label>
+            <input type="text" id="gift-body" placeholder="예: 5만원 이상 구매 시 한정 수량 증정" oninput="validateGiftText()">
+            <div class="char-count">
+                <span id="body-msg">권장: 25자 이하 / 최대: 38자</span>
+                <span id="body-count">0 / 38자</span>
             </div>
-
         </div>
-    </aside>
+        <div id="dupe-warning" class="hidden" style="color: var(--error); font-size: 12px; font-weight: bold; margin-top: 8px;">
+            <i class="material-icons" style="font-size: 14px; vertical-align: middle;">error</i> 
+            타이틀과 본문에 동일한 내용이 중복 입력되었습니다.
+        </div>
+    </div>
 
-    <!-- =========================================
-         [우측 패널] 캔버스 & 미리보기 영역
-         ========================================= -->
-    <main class="right-panel" id="right-panel">
+    <!-- 5. Resolution Simulator (Gift Only) -->
+    <div class="card hidden" id="preview-card">
+        <h2>4. 해상도별 미리보기 (말줄임 시뮬레이션)</h2>
+        <p class="desc">해상도 변경 버튼을 눌러 모바일 환경에서 텍스트가 어떻게 보이는지 확인하세요. 타이틀은 2줄 초과 시 말줄임(...) 처리됩니다.</p>
         
-        <!-- 업로드 전 빈 화면 (Empty State) -->
-        <div class="empty-state" id="empty-state">
-            <i class="material-icons">image_search</i>
-            <h3>검수할 이미지를 업로드해주세요</h3>
-            <p style="text-align: center;">좌측 패널에서 이미지 파일을 올리면 자동으로 검수가 시작돼요.</p>
+        <div class="sim-buttons" id="sim-buttons">
+            <button class="sim-btn" onclick="setSimWidth(320, this)">iPhone SE (320px)</button>
+            <button class="sim-btn active" onclick="setSimWidth(360, this)">기준 해상도 (360px)</button>
+            <button class="sim-btn" onclick="setSimWidth(375, this)">iPhone 11 Pro (375px)</button>
+            <button class="sim-btn" onclick="setSimWidth(393, this)">iPhone 14 (393px)</button>
+            <button class="sim-btn" onclick="setSimWidth(1280, this)">Desktop (1280px)</button>
         </div>
 
-        <div id="result-content" class="hidden">
-            
-            <!-- 1. 미리보기 (배너 안전영역 or 증정품 시뮬레이터) -->
-            <div class="content-block">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                    <h2 style="margin-bottom: 0;"><i class="material-icons">visibility</i> 미리보기</h2>
-                    <!-- 증정품 가이드 토글 스위치 -->
-                    <div id="guide-toggle-container" style="display: none; align-items: center; gap: 8px;">
-                        <span style="font-size: 13px; color: var(--text-secondary);">안전 영역 표시</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="guide-toggle-checkbox" onchange="toggleGuide()">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-                
-                <!-- Banner Safe Area -->
-                <div id="safe-area-view" class="hidden">
-                    <p class="section-desc">좌우 음영 영역은 <span style="color: var(--error);">세로형 배너</span>에서 크롭되어 보이지 않아요. 중요한 이미지는 반드시 중앙 안전 영역에 배치하세요.</p>
-                    
-                    <!-- 비교 뷰: 가로형 + 세로형 -->
-                    <div style="background: #F3F4F6; padding: 32px; border-radius: 8px; overflow-x: auto;">
-                        <div style="display: flex; gap: 16px; justify-content: center; min-width: 557px;">
-                            
-                            <!-- 가로형 (345×258px) -->
-                            <div style="flex-shrink: 0;">
-                                <div style="position: relative; width: 345px; height: 258px; margin: 0 auto; overflow: hidden; background: #fff; border: 1px solid #E5E7EB; border-radius: 4px;">
-                                    <img id="banner-preview-img" src="" alt="Banner Preview" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
-                                    <!-- 좌우 안전영역 가이드 (빨간색 30% 투명도) -->
-                                    <div style="position: absolute; top: 0; bottom: 0; left: 0; width: 21.594%; background: rgba(229, 58, 54, 0.3); border-right: 1px dashed rgba(255,255,255,0.8); pointer-events: none;"></div>
-                                    <div style="position: absolute; top: 0; bottom: 0; right: 0; width: 21.594%; background: rgba(229, 58, 54, 0.3); border-left: 1px dashed rgba(255,255,255,0.8); pointer-events: none;"></div>
-                                    <!-- 안전 영역 라벨 -->
-                                    <div style="position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; backdrop-filter: blur(4px); white-space: nowrap;">안전 영역 (196px)</div>
-                                </div>
-                                <!-- 라벨 -->
-                                <div style="text-align: center; margin-top: 12px; font-size: 11px; font-weight: 600; color: var(--text-secondary);">가로형</div>
-                            </div>
-                            
-                            <!-- 세로형 (196×258px) -->
-                            <div style="flex-shrink: 0;">
-                                <div style="position: relative; width: 196px; height: 258px; margin: 0 auto; overflow: hidden; background: #fff; border: 1px solid #E5E7EB; border-radius: 4px;">
-                                    <img id="banner-preview-img-vertical" src="" alt="Banner Preview Vertical" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
-                                </div>
-                                <!-- 라벨 -->
-                                <div style="text-align: center; margin-top: 12px; font-size: 11px; font-weight: 600; color: var(--text-secondary);">세로형</div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Gift Simulator -->
-                <div id="simulator-view" class="hidden">
-                    <p class="section-desc">해상도별로 텍스트 말줄임 처리를 확인하세요.</p>
-                    <div class="sim-buttons" id="sim-buttons">
-                        <button class="sim-btn" onclick="setSimWidth(320, this)">iPhone SE (320px)</button>
-                        <button class="sim-btn active" onclick="setSimWidth(360, this)">기준 해상도 (360px)</button>
-                        <button class="sim-btn" onclick="setSimWidth(375, this)">iPhone 11 Pro (375px)</button>
-                        <button class="sim-btn" onclick="setSimWidth(430, this)">iPhone 16 Pro Max (430px)</button>
-                        <button class="sim-btn" onclick="setSimWidth(834, this)">iPad Pro (834px)</button>
-                    </div>
-                    <div class="sim-wrapper">
-                        <div class="sim-device" id="sim-device" style="width: 360px;">
-                            <div class="sim-header" id="sim-header-text">기준 해상도 (360px)</div>
-                            
-                            <!-- 프로모션 시뮬레이터 (기본) -->
-                            <div class="sim-content" id="promo-sim-content">
-                                <div class="sim-img" style="position: relative;">
-                                    <img id="sim-image-preview" src="" alt="Gift Image">
-                                    <!-- 안전 영역 가이드 오버레이 (박스 형태) -->
-                                    <div id="promo-guide-overlay" style="position: absolute; top: 6px; left: 6px; width: 84px; height: 84px; background-color: rgba(255, 0, 0, 0.3); pointer-events: none; display: none;"></div>
-                                </div>
-                                <div class="sim-text">
-                                    <div class="sim-title" id="sim-title-view">올리브영 폴딩카트 굿즈</div>
-                                    <div class="sim-body" id="sim-body-view">본 매장에서 30,000원 이상 구매 시</div>
-                                    <div class="sim-date">5.20 ~ 5.27 소진 시 종료</div>
-                                </div>
-                            </div>
-                            
-                            <!-- 관심매장 시뮬레이터 -->
-                            <div id="interest-sim-content" class="hidden" style="background: #131518; padding: 20px 0 64px 0; min-height: 500px; overflow: hidden;">
-                                <div style="color: #FFFFFF; font-size: 18px; font-weight: 700; padding: 10px 15px; margin-bottom: 10px;">관심매장 소식</div>
-                                
-                                <!-- 카드 컨테이너 (가로 스크롤) -->
-                                <div style="display: flex; gap: 12px; overflow-x: visible;">
-                                    <!-- 첫 번째 카드 (실제 콘텐츠) -->
-                                    <div class="interest-card" id="interest-card" style="background: #FFFFFF; border-radius: 4px; margin: 0 0 0 15px; flex-shrink: 0;">
-                                        <!-- 상단: 매장 정보 (더미) -->
-                                        <div style="padding: 32px 12px 24px 12px; text-align: center;">
-                                            <div style="width: 64px; height: 64px; background: #E0E1E8; border-radius: 50%; margin: 0 auto 16px auto;"></div>
-                                            <div style="font-size: 16px; font-weight: 700; margin-bottom: 4px; color: #131518;">올리브영 명동 타운</div>
-                                            <div style="font-size: 13px; color: #50585F;">영업 중 · 화 08:00 ~ 23:00</div>
-                                        </div>
-                                        <!-- 중단: 증정품 영역 -->
-                                        <div style="margin: 0 12px;">
-                                            <div style="background: #F6F7F9; border-radius: 4px; padding: 16px 12px; display: flex; gap: 12px; align-items: center;">
-                                                <div id="interest-gift-text" style="min-width: 0;">
-                                                    <div style="font-size: 14px; font-weight: 700; line-height: 20px; color: var(--text-primary); margin-bottom: 6px; word-wrap: break-word; overflow-wrap: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;" id="interest-title-view">올리브영 폴딩카트 굿즈</div>
-                                                    <div style="font-size: 13px; line-height: 18px; color: var(--text-secondary); word-wrap: break-word; overflow-wrap: break-word;" id="interest-body-view">본 매장에서 30,000원 이상 구매 시</div>
-                                                    <div style="font-size: 13px; line-height: 18px; color: var(--text-secondary); margin-top: 6px;">5.10 ~ 5.23 소진 시 종료</div>
-                                                </div>
-                                                <div style="width: 80px; height: 80px; border-radius: 4px; flex-shrink: 0; overflow: hidden; position: relative;">
-                                                    <img id="interest-image-preview" src="" alt="Gift Image" style="width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply;">
-                                                    <!-- 안전 영역 가이드 오버레이 (박스 형태) -->
-                                                    <div id="interest-guide-overlay" style="position: absolute; top: 5px; left: 5px; width: 70px; height: 70px; background-color: rgba(255, 0, 0, 0.3); pointer-events: none; display: none;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- 하단: 매장 정보 보기 버튼 (더미) -->
-                                        <div style="margin-top: 16px; padding: 0 20px 28px 20px; text-align: center;">
-                                            <div style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 40px; padding: 12px 20px; background: #FFFFFF; border: 1px solid var(--divider); border-radius: 443px; font-size: 14px; color: var(--text-primary);">매장 정보 보기 ></div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- 두 번째 카드 (더미 - 스와이프 효과용) -->
-                                    <div class="interest-card-dummy" id="interest-card-dummy" style="background: #FFFFFF; border-radius: 4px; flex-shrink: 0;">
-                                        <!-- 내용 없음 (자리만 차지) -->
-                                    </div>
-                                </div>
-                            </div>
-
-                            </div>
-                        </div>
+        <div class="sim-wrapper">
+            <div class="sim-device" id="sim-device" style="width: 360px;">
+                <div class="sim-header" id="sim-header-text">기준 해상도 (360px)</div>
+                <div class="sim-content">
+                    <div class="sim-img"><img id="sim-image-preview" src="" alt="Gift Image"></div>
+                    <div class="sim-text">
+                        <div class="sim-title" id="sim-title-view">타이틀이 이곳에 표시됩니다.</div>
+                        <div class="sim-body" id="sim-body-view">본문 내용이 이곳에 표시됩니다.</div>
                     </div>
                 </div>
             </div>
-
-            <!-- 2. 규격 검수 결과 -->
-            <div class="content-block hidden" id="validation-block">
-                <h2><i class="material-icons">rule</i> 규격 자동 검수</h2>
-                <div class="result-list" id="validation-list">
-                    <!-- Javascript injected here -->
-                </div>
-            </div>
-
-            <!-- 3. 수동 체크리스트 & 최종 요약 -->
-            <div class="content-block hidden" id="final-check-block" style="border-color: var(--primary);">
-                <h2><i class="material-icons">task_alt</i> 최종 확인 및 결과</h2>
-                
-                <p class="section-desc">아래 항목들은 직접 확인하고 가이드 준수했는지 체크해주세요.</p>
-                <div class="checkbox-group" id="manual-checkboxes" style="margin-bottom: 24px;">
-                    <!-- 체크박스는 JavaScript에서 동적으로 생성됩니다 -->
-                </div>
-
-                <div class="summary-lists" id="summary-lists">
-                    <!-- Append err/warn lists here -->
-                </div>
-
-                <div id="summary-box" class="summary-box">
-                    결과 판정 중...
-                </div>
-            </div>
-
         </div>
-    </main>
+    </div>
+
+    <!-- 6. Final Summary -->
+    <div class="card hidden" id="summary-card">
+        <h2 id="summary-title">최종 검수 결과 요약</h2>
+        
+        <div id="summary-box" class="summary-box">
+            결과 판정 중...
+        </div>
+
+        <div class="summary-lists" id="summary-lists">
+            <!-- Append err/warn lists here -->
+        </div>
+
+        <h3>수동 확인 항목 (체크리스트)</h3>
+        <p class="desc" style="margin-bottom: 16px;">아래 항목들은 시스템이 감지할 수 없어 작업자가 직접 눈으로 확인해야 합니다.</p>
+        <div class="checkbox-group" id="manual-checkboxes">
+            <label class="checkbox-label"><input type="checkbox" onchange="updateFinalStatus()"> 배경색이 가이드에 맞게 적용되었는가?</label>
+            <label class="checkbox-label"><input type="checkbox" onchange="updateFinalStatus()"> 이미지 내에 불필요한 텍스트가 포함되지 않았는가?</label>
+            <label class="checkbox-label"><input type="checkbox" onchange="updateFinalStatus()"> 이미지에 Dim(어둡게) 처리가 들어가지 않았는가?</label>
+            <label class="checkbox-label"><input type="checkbox" onchange="updateFinalStatus()"> 주요 오브젝트가 여백 규정에 맞게 중앙에 잘 배치되었는가?</label>
+        </div>
+    </div>
 
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
     // --- State Variables ---
     let currentType = 'banner'; // 'banner' or 'gift'
     let uploadedFile = null;
@@ -622,60 +304,9 @@
     let imgWidth = 0;
     let imgHeight = 0;
     
-    // Validation arrays
+    // Arrays to hold inspection results
     let errors = [];
-    let warnings =[];
-    
-    // 탭별 상태 저장소
-    const tabStates = {
-        'banner': {
-            file: null,
-            dataUrl: null,
-            width: 0,
-            height: 0,
-            titleInput: '',
-            checkedItems: []
-        },
-        'gift-interest': {
-            file: null,
-            dataUrl: null,
-            width: 0,
-            height: 0,
-            titleInput: '',
-            checkedItems: []
-        },
-        'gift-sheet': {
-            file: null,
-            dataUrl: null,
-            width: 0,
-            height: 0,
-            titleInput: '',
-            checkedItems: []
-        }
-    };
-
-    // --- Manual Checklist Data ---
-    const checklistData = {
-        'banner': [
-            '배경색을 흰색(#FFFFFF)으로 적용하지 않은 것이 맞나요?',
-            '이미지 내에 배너 타이틀과 동일한 텍스트를 삽입하지 않았나요?',
-            '이미지에 Dim(어둡게) 효과가 들어가지 않았나요?',
-            '주요 오브젝트가 중앙 안전 영역에 배치되었나요?',
-            '주요 오브젝트가 세로, 가로형에서 의도한대로 제대로 노출되나요?'
-        ],
-        'gift-interest': [
-            '배경색이 흰색(#FFFFFF)으로 제대로 적용되었나요?',
-            '이미지 배경에 패턴, 컬러 등 다른 요소를 노출하지 않았나요?',
-            '상품이 안전 영역 표시 내에 위치하나요?(상단 안전영역 토글 확인)',
-            '증정품 타이틀에는 상품명만 적용한게 맞나요?'
-        ],
-        'gift-sheet': [
-            '배경색이 흰색(#FFFFFF)으로 제대로 적용되었나요?',
-            '이미지 배경에 패턴, 컬러 등 다른 요소를 노출하지 않았나요?',
-            '상품이 안전 영역 표시 내에 위치하나요?(상단 안전영역 토글 확인)',
-            '증정품 타이틀에는 상품명만 적용한게 맞나요?'
-        ]
-    };
+    let warnings = [];
 
     // --- DOM Elements ---
     const dropzone = document.getElementById('dropzone');
@@ -687,155 +318,42 @@
         resetUI();
     });
 
-    // --- Switch Tab (Segment Control) ---
+    // --- Tab Switching ---
     function switchTab(type) {
-        // 이전 탭 상태 저장 (currentType이 아직 이전 탭을 가리킴)
-        saveCurrentTabState();
-        
-        // 새 탭으로 전환
         currentType = type;
-        
-        // Update Buttons
         document.getElementById('tab-banner').classList.remove('active');
-        document.getElementById('tab-gift-interest').classList.remove('active');
-        document.getElementById('tab-gift-sheet').classList.remove('active');
+        document.getElementById('tab-gift').classList.remove('active');
         document.getElementById(`tab-${type}`).classList.add('active');
         
-        // Update Helper Text
-        document.getElementById('upload-desc').innerText = currentType === 'banner' 
-            ? "가로 690px, 세로 516px 규격의 이미지를 업로드해주세요." 
-            : "가로 640px, 세로 640px 규격의 이미지를 업로드해주세요.";
-
-        // Toggle Left Panel Input Section
-        if(type === 'gift-interest' || type === 'gift-sheet') {
-            document.getElementById('text-input-section').classList.remove('hidden');
-            document.getElementById('guide-toggle-container').style.display = 'flex';
-        } else {
-            document.getElementById('text-input-section').classList.add('hidden');
-            document.getElementById('guide-toggle-container').style.display = 'none';
-            document.getElementById('guide-toggle-checkbox').checked = false;
-            document.getElementById('promo-guide-overlay').style.display = 'none';
-            document.getElementById('interest-guide-overlay').style.display = 'none';
-        }
-
-        // Update Manual Checklist
-        updateManualChecklist(type);
+        // Reset state & UI
+        uploadedFile = null;
+        imgDataUrl = null;
+        fileInput.value = "";
+        document.getElementById('gift-title').value = "";
+        document.getElementById('gift-body').value = "";
         
-        // 새 탭 상태 불러오기
-        loadTabState(type);
+        // Uncheck all checkboxes
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+        resetUI();
     }
 
     function resetUI() {
-        document.getElementById('empty-state').classList.remove('hidden');
-        document.getElementById('result-content').classList.add('hidden');
-        document.getElementById('validation-block').classList.add('hidden');
-        document.getElementById('final-check-block').classList.add('hidden');
-        // inline style 제거 - CSS에 맡김
-    }
-    
-    // --- 탭 상태 저장 ---
-    function saveCurrentTabState() {
-        const state = tabStates[currentType];
-        state.file = uploadedFile;
-        state.dataUrl = imgDataUrl;
-        state.width = imgWidth;
-        state.height = imgHeight;
-        state.titleInput = document.getElementById('gift-title').value;
+        document.getElementById('validation-card').classList.add('hidden');
+        document.getElementById('safe-area-card').classList.add('hidden');
+        document.getElementById('text-input-card').classList.add('hidden');
+        document.getElementById('preview-card').classList.add('hidden');
+        document.getElementById('summary-card').classList.add('hidden');
         
-        // 체크박스 상태 저장
-        const checkboxes = document.querySelectorAll('#manual-checkboxes input[type="checkbox"]');
-        state.checkedItems = Array.from(checkboxes).map((cb, index) => cb.checked ? index : -1).filter(i => i !== -1);
-    }
-    
-    // --- 탭 상태 불러오기 ---
-    function loadTabState(tabType) {
-        const state = tabStates[tabType];
-        
-        // 상태 복원
-        uploadedFile = state.file;
-        imgDataUrl = state.dataUrl;
-        imgWidth = state.width;
-        imgHeight = state.height;
-        
-        // 입력값 복원
-        document.getElementById('gift-title').value = state.titleInput || '';
-        
-        // 체크박스 초기화 후 저장된 상태 복원
-        const checkboxes = document.querySelectorAll('#manual-checkboxes input[type="checkbox"]');
-        checkboxes.forEach((cb, index) => {
-            cb.checked = state.checkedItems && state.checkedItems.includes(index);
-        });
-        
-        // 이미지가 있으면 화면에 표시
-        if (uploadedFile && imgDataUrl) {
-            document.getElementById('empty-state').classList.add('hidden');
-            document.getElementById('result-content').classList.remove('hidden');
-            document.getElementById('validation-block').classList.remove('hidden');
-            document.getElementById('final-check-block').classList.remove('hidden');
-            
-            // 초기화 버튼 활성화
-            document.getElementById('reset-tab-btn').disabled = false;
-            
-            runValidation();
-        } else {
-            resetUI();
-            
-            // 초기화 버튼 비활성화
-            document.getElementById('reset-tab-btn').disabled = true;
-        }
-    }
-    
-    // --- 현재 탭만 초기화 ---
-    function resetCurrentTab() {
-        // 현재 탭 상태 초기화
-        const state = tabStates[currentType];
-        state.file = null;
-        state.dataUrl = null;
-        state.width = 0;
-        state.height = 0;
-        state.titleInput = '';
-        state.checkedItems = [];
-        
-        // 전역 변수 초기화
-        uploadedFile = null;
-        imgDataUrl = null;
-        imgWidth = 0;
-        imgHeight = 0;
-        
-        // 입력값 초기화
-        fileInput.value = "";
-        document.getElementById('gift-title').value = "";
-        document.querySelectorAll('#manual-checkboxes input[type="checkbox"]').forEach(cb => cb.checked = false);
-        
-        // UI 초기화
-        resetUI();
-        
-        // 초기화 버튼 비활성화
-        document.getElementById('reset-tab-btn').disabled = true;
-    }
-    
-    // --- 안전 영역 가이드 토글 ---
-    function toggleGuide() {
-        const checkbox = document.getElementById('guide-toggle-checkbox');
-        const promoGuide = document.getElementById('promo-guide-overlay');
-        const interestGuide = document.getElementById('interest-guide-overlay');
-        
-        if (checkbox.checked) {
-            promoGuide.style.display = 'block';
-            interestGuide.style.display = 'block';
-        } else {
-            promoGuide.style.display = 'none';
-            interestGuide.style.display = 'none';
-        }
+        document.getElementById('upload-desc').innerText = currentType === 'banner' 
+            ? "스토어 썸네일: 정확히 690x516px (JPG/PNG)" 
+            : "증정품 이미지: 정확히 640x640px (JPG/PNG)";
     }
 
     // --- Drag and Drop Setup ---
     function setupDragAndDrop() {
         dropzone.addEventListener('click', () => fileInput.click());
-        dropzone.addEventListener('dragover', (e) => { 
-            e.preventDefault(); 
-            dropzone.classList.add('dragover'); 
-        });
+        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
         dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
         dropzone.addEventListener('drop', (e) => {
             e.preventDefault();
@@ -855,11 +373,9 @@
     function handleFile(file) {
         const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
         if (!validTypes.includes(file.type)) {
-            alert('JPG, PNG 파일만 업로드 가능합니다.');
+            alert('JPG, JPEG, PNG 파일만 허용됩니다.');
             return;
         }
-
-        // 업로드 성공 시 스타일 변경 제거 (원래 상태 유지)
 
         uploadedFile = file;
         const reader = new FileReader();
@@ -869,19 +385,6 @@
             img.onload = () => {
                 imgWidth = img.width;
                 imgHeight = img.height;
-                
-                // Switch UI State
-                document.getElementById('empty-state').classList.add('hidden');
-                document.getElementById('result-content').classList.remove('hidden');
-                document.getElementById('validation-block').classList.remove('hidden');
-                document.getElementById('final-check-block').classList.remove('hidden');
-                
-                // 초기화 버튼 활성화
-                document.getElementById('reset-tab-btn').disabled = false;
-                
-                // 체크리스트 업데이트
-                updateManualChecklist(currentType);
-                
                 runValidation();
             };
             img.src = imgDataUrl;
@@ -889,379 +392,197 @@
         reader.readAsDataURL(file);
     }
 
-    // --- Core Validation Logic ---
+    // --- Main Validation Logic ---
     function runValidation() {
         errors = [];
-        warnings =[];
-        document.getElementById('validation-list').innerHTML = "";
+        warnings = [];
+        const validationList = document.getElementById('validation-list');
+        validationList.innerHTML = "";
 
         // 1. File Format
-        addResultItem(true, "파일 포맷", `정상 (${uploadedFile.type.replace('image/', '').toUpperCase()})`);
+        addResultItem(true, "파일 포맷", `정상 (${uploadedFile.type})`);
 
-        // 2. File Size
+        // 2. File Size (KB)
         const sizeKB = (uploadedFile.size / 1024).toFixed(1);
         if (sizeKB <= 150) {
-            addResultItem(true, "파일 용량 (최대 300KB 이하)", `최적화 완료 (${sizeKB}KB)`);
+            addResultItem(true, "파일 용량", `최적 (${sizeKB}KB)`);
         } else if (sizeKB <= 300) {
-            addResultItem(false, "파일 용량 (최대 300KB 이하)", `권장 150KB 초과 (${sizeKB}KB)`, true);
-            warnings.push(`권장 파일 용량 150KB를 초과했어요. 가능하면 수정해 주세요. (현재: ${sizeKB}KB)`);
+            addResultItem(false, "파일 용량", `권장 초과 (${sizeKB}KB / 최대 300KB)`, true);
+            warnings.push(`파일 용량이 권장(150KB)을 초과했습니다. (${sizeKB}KB)`);
         } else {
-            addResultItem(false, "파일 용량 (최대 300KB 이하)", `최대 허용치 초과 (${sizeKB}KB)`, false);
-            errors.push(`파일 용량이 최대 300KB를 초과했어요. 300KB 이하로 저장해 주세요. (현재: ${sizeKB}KB)`);
+            addResultItem(false, "파일 용량", `최대 허용치 초과 (${sizeKB}KB)`, false);
+            errors.push(`파일 용량 초과! 최대 300KB 이하로 최적화 해주세요. (현재: ${sizeKB}KB)`);
         }
 
-        // 3. Image Dimensions & Views
-        const safeAreaView = document.getElementById('safe-area-view');
-        const simulatorView = document.getElementById('simulator-view');
-
+        // 3. Image Dimensions
         if (currentType === 'banner') {
-            safeAreaView.classList.remove('hidden');
-            simulatorView.classList.add('hidden');
-            document.getElementById('banner-preview-img').src = imgDataUrl;
-            document.getElementById('banner-preview-img-vertical').src = imgDataUrl;
-
             if (imgWidth === 690 && imgHeight === 516) {
-                addResultItem(true, "이미지 해상도", `정상 (690x516px)`);
+                addResultItem(true, "이미지 규격", `정상 (690x516px)`);
             } else {
-                addResultItem(false, "이미지 해상도", `규격 오류 (${imgWidth}x${imgHeight}px)`, false);
-                errors.push(`이미지 사이즈는 690x516px 이어야 해요. (현재: ${imgWidth}x${imgHeight}px)`);
+                addResultItem(false, "이미지 규격", `오류 (현재 ${imgWidth}x${imgHeight}px / 필요 690x516px)`);
+                errors.push(`이미지 사이즈가 690x516px 이 아닙니다. (현재: ${imgWidth}x${imgHeight}px)`);
             }
+            // Show Banner Specific UI
+            document.getElementById('safe-area-card').classList.remove('hidden');
+            document.getElementById('text-input-card').classList.add('hidden');
+            document.getElementById('preview-card').classList.add('hidden');
             
-            // 배경색 자동 검증 (배너는 흰색 배경이면 안 됨)
-            checkNonWhiteBackground(uploadedFile).then(isNonWhite => {
-                if (isNonWhite) {
-                    addResultItem(true, "배경색", "배경색 확인 완료<br><span style='color: #10B981; margin-top: 4px; display: inline-block;'>💡 자동 검증은 모서리만 확인해요. 전체 영역이 흰색이 아닌지 직접 확인해 주세요.</span>");
-                } else {
-                    addResultItem(false, "배경색", "이미지 배경에 흰색(#FFFFFF)이 적용됐어요. 배경색을 수정해 주세요.", false);
-                    errors.push("이미지 배경에 흰색(#FFFFFF)이 적용됐어요. 배경색을 수정해 주세요.");
-                }
-                updateFinalStatus();
-            });
+            document.getElementById('visualizer-img').src = imgDataUrl;
 
         } else {
-            safeAreaView.classList.add('hidden');
-            simulatorView.classList.remove('hidden');
-            
-            // 관심매장 vs 프로모션 콘텐츠 전환
-            const promoSimContent = document.getElementById('promo-sim-content');
-            const interestSimContent = document.getElementById('interest-sim-content');
-            
-            if (currentType === 'gift-interest') {
-                // 관심매장: 검은 배경 + 카드 표시
-                promoSimContent.classList.add('hidden');
-                interestSimContent.classList.remove('hidden');
-                document.getElementById('interest-image-preview').src = imgDataUrl;
-                
-                // 텍스트 너비 + 카드 너비 설정
-                const simDevice = document.getElementById('sim-device');
-                const currentWidth = parseInt(simDevice.style.width) || 360;
-                const textWidth = currentWidth - 195;
-                const interestTextEl = document.getElementById('interest-gift-text');
-                if (interestTextEl) {
-                    interestTextEl.style.width = textWidth + 'px';
-                    interestTextEl.style.maxWidth = textWidth + 'px';
-                }
-                
-                // 카드 너비 계산: 480px 이상이면 405px 고정, 아니면 화면 너비 - 55px
-                const interestCardEl = document.getElementById('interest-card');
-                const interestCardDummyEl = document.getElementById('interest-card-dummy');
-                let cardWidth;
-                if (currentWidth >= 480) {
-                    cardWidth = 405;
-                } else {
-                    cardWidth = currentWidth - 55;
-                }
-                
-                if (interestCardEl) {
-                    interestCardEl.style.width = cardWidth + 'px';
-                }
-                if (interestCardDummyEl) {
-                    interestCardDummyEl.style.width = cardWidth + 'px';
-                }
-                
-                // 배경색 자동 검증 (관심매장만)
-                checkBackgroundColor(uploadedFile).then(isWhite => {
-                    if (isWhite) {
-                        addResultItem(true, "배경색", "흰색 배경 확인 완료 (#FFFFFF)");
-                    } else {
-                        addResultItem(false, "배경색", "이미지 배경이 흰색(#FFFFFF)이 아니에요. 배경색을 수정해 주세요.", false);
-                        errors.push("이미지 배경이 흰색(#FFFFFF)이 아니에요. 배경색을 수정해 주세요.");
-                    }
-                    updateFinalStatus();
-                });
-            } else {
-                // 프로모션: 기존 스타일 표시
-                promoSimContent.classList.remove('hidden');
-                interestSimContent.classList.add('hidden');
-                document.getElementById('sim-image-preview').src = imgDataUrl;
-                
-                // 타입별로 sim-content 클래스 적용
-                const simContent = document.querySelector('.sim-content');
-                if (currentType === 'gift-sheet') {
-                    simContent.classList.add('gift-sheet-type');
-                } else {
-                    simContent.classList.remove('gift-sheet-type');
-                }
-                
-                // 배경색 자동 검증 (프로모션)
-                checkBackgroundColor(uploadedFile).then(isWhite => {
-                    if (isWhite) {
-                        addResultItem(true, "배경색", "흰색 배경 확인 완료 (#FFFFFF)");
-                    } else {
-                        addResultItem(false, "배경색", "이미지 배경이 흰색(#FFFFFF)이 아니에요. 배경색을 수정해 주세요.", false);
-                        errors.push("이미지 배경이 흰색(#FFFFFF)이 아니에요. 배경색을 수정해 주세요.");
-                    }
-                    updateFinalStatus();
-                });
-            }
-
+            // Gift Image
             if (imgWidth === 640 && imgHeight === 640) {
-                addResultItem(true, "이미지 해상도", `정상 (640x640px)`);
+                addResultItem(true, "이미지 규격", `정상 (640x640px)`);
             } else {
-                addResultItem(false, "이미지 해상도", `규격 오류 (${imgWidth}x${imgHeight}px)`, false);
-                errors.push(`이미지 사이즈는 640x640px(정방형)이어야 해요. (현재: ${imgWidth}x${imgHeight}px)`);
+                addResultItem(false, "이미지 규격", `오류 (현재 ${imgWidth}x${imgHeight}px / 필요 640x640px)`);
+                errors.push(`이미지 사이즈가 640x640px 이 아닙니다. (현재: ${imgWidth}x${imgHeight}px)`);
             }
-            validateGiftText(); // Run text validation to update lists
+            // Show Gift Specific UI
+            document.getElementById('safe-area-card').classList.add('hidden');
+            document.getElementById('text-input-card').classList.remove('hidden');
+            document.getElementById('preview-card').classList.remove('hidden');
+            
+            document.getElementById('sim-image-preview').src = imgDataUrl;
+            validateGiftText(); // Initial run for text
         }
+
+        document.getElementById('validation-card').classList.remove('hidden');
+        document.getElementById('summary-card').classList.remove('hidden');
+        
+        if(currentType === 'banner') updateFinalStatus();
     }
 
-    // Helper: Add list item to UI
     function addResultItem(isSuccess, title, desc, isWarning = false) {
         let statusClass = isSuccess ? 'status-success' : (isWarning ? 'status-warning' : 'status-error');
-        let icon = isSuccess ? 'check_circle' : (isWarning ? 'warning' : 'error');
+        let icon = isSuccess ? 'check_circle' : (isWarning ? 'warning' : 'cancel');
         
-        const div = document.createElement('div');
-        div.className = `result-item ${statusClass}`;
-        div.innerHTML = `
-            <i class="material-icons">${icon}</i> 
-            <div class="result-text">
-                <strong>${title}</strong>
-                <span>${desc}</span>
-            </div>
-        `;
-        document.getElementById('validation-list').appendChild(div);
+        const li = document.createElement('li');
+        li.className = `result-item ${statusClass}`;
+        li.innerHTML = `<i class="material-icons">${icon}</i> <span><strong>${title}:</strong> ${desc}</span>`;
+        document.getElementById('validation-list').appendChild(li);
     }
 
     // --- Gift Text Validation ---
     function validateGiftText() {
-        if (currentType !== 'gift-interest' && currentType !== 'gift-sheet') return;
+        if (currentType !== 'gift') return;
         
         const titleInput = document.getElementById('gift-title').value;
+        const bodyInput = document.getElementById('gift-body').value;
         const titleLen = titleInput.length;
+        const bodyLen = bodyInput.length;
 
         const titleCountEl = document.getElementById('title-count');
+        const bodyCountEl = document.getElementById('body-count');
 
-        // Filter out old text errors, keep image errors
-        errors = errors.filter(e => !e.includes('타이틀'));
-        warnings = warnings.filter(w => !w.includes('타이틀'));
+        // Reset text arrays to prevent duplicate pushes from inputs
+        // Retain only image errors/warnings by filtering out text ones (crude but effective approach for single file)
+        errors = errors.filter(e => e.includes('용량') || e.includes('사이즈'));
+        warnings = warnings.filter(w => w.includes('용량'));
 
-        // Title Validation
+        // Title Check (Rec: 30, Max: 40)
         titleCountEl.innerText = `${titleLen} / 40자`;
         titleCountEl.className = '';
-        
-        // 금지 문구 검증 (증정, 매장, 구매 포함 시 에러)
-        const forbiddenWords = ['증정', '매장', '구매'];
-        const hasForbiddenWord = forbiddenWords.some(word => titleInput.includes(word));
-        
         if (titleLen === 0) {
-            // 미입력 시 에러 없음 (체크리스트로 확인)
-        } else if (hasForbiddenWord) {
-            titleCountEl.classList.add('count-error');
-            errors.push('타이틀에는 상품명만 입력해야 해요. "증정", "매장", "구매" 등의 문구를 제거해 주세요.');
+            errors.push('증정품 타이틀을 입력해주세요.');
         } else if (titleLen <= 30) {
             titleCountEl.classList.add('count-success');
         } else if (titleLen <= 40) {
             titleCountEl.classList.add('count-warning');
-            warnings.push('타이틀 권장 글자 수 30자를 초과했어요.');
+            warnings.push('타이틀이 권장 글자수(30자)를 초과하여 모바일에서 잘릴 수 있습니다.');
         } else {
             titleCountEl.classList.add('count-error');
-            errors.push(`타이틀 최대 글자 수 40자를 초과했어요. (현재: ${titleLen}자)`);
+            errors.push(`타이틀 최대 글자수(40자)를 초과했습니다. (현재 ${titleLen}자)`);
         }
 
-        // Update Simulator Views (타이틀만)
-        document.getElementById('sim-title-view').innerText = titleInput || '올리브영 폴딩카트 굿즈';
-        document.getElementById('interest-title-view').innerText = titleInput || '올리브영 폴딩카트 굿즈';
+        // Body Check (Rec: 25, Max: 38)
+        bodyCountEl.innerText = `${bodyLen} / 38자`;
+        bodyCountEl.className = '';
+        if (bodyLen === 0) {
+            errors.push('증정품 본문을 입력해주세요.');
+        } else if (bodyLen <= 25) {
+            bodyCountEl.classList.add('count-success');
+        } else if (bodyLen <= 38) {
+            bodyCountEl.classList.add('count-warning');
+            warnings.push('본문이 권장 글자수(25자)를 초과하여 모바일에서 잘릴 수 있습니다.');
+        } else {
+            bodyCountEl.classList.add('count-error');
+            errors.push(`본문 최대 글자수(38자)를 초과했습니다. (현재 ${bodyLen}자)`);
+        }
+
+        // Dupe Check
+        const dupeWarning = document.getElementById('dupe-warning');
+        if (titleLen > 0 && titleInput === bodyInput) {
+            dupeWarning.classList.remove('hidden');
+            errors.push('타이틀과 본문에 동일한 문구가 입력되었습니다.');
+        } else {
+            dupeWarning.classList.add('hidden');
+        }
+
+        // Update Simulator Views
+        document.getElementById('sim-title-view').innerText = titleInput || '타이틀이 이곳에 표시됩니다.';
+        document.getElementById('sim-body-view').innerText = bodyInput || '본문 내용이 이곳에 표시됩니다.';
 
         updateFinalStatus();
     }
 
-    // --- Simulator Resize ---
+    // --- Simulator Button ---
     function setSimWidth(width, btnEl) {
         document.querySelectorAll('.sim-btn').forEach(btn => btn.classList.remove('active'));
         btnEl.classList.add('active');
         
-        document.getElementById('sim-device').style.width = width + 'px';
-        document.getElementById('sim-header-text').innerText = btnEl.innerText;
+        const device = document.getElementById('sim-device');
+        const header = document.getElementById('sim-header-text');
         
-        // 관심매장일 때 텍스트 너비 + 카드 너비 계산
-        if (currentType === 'gift-interest') {
-            // 텍스트 너비 = 화면 너비 - 195px
-            const textWidth = width - 195;
-            const interestTextEl = document.getElementById('interest-gift-text');
-            if (interestTextEl) {
-                interestTextEl.style.width = textWidth + 'px';
-                interestTextEl.style.maxWidth = textWidth + 'px';
-            }
-            
-            // 카드 너비: 480px 이상이면 405px 고정, 아니면 화면 너비 - 55px
-            const interestCardEl = document.getElementById('interest-card');
-            const interestCardDummyEl = document.getElementById('interest-card-dummy');
-            let cardWidth;
-            if (width >= 480) {
-                cardWidth = 405;
-            } else {
-                cardWidth = width - 55;
-            }
-            
-            if (interestCardEl) {
-                interestCardEl.style.width = cardWidth + 'px';
-            }
-            if (interestCardDummyEl) {
-                interestCardDummyEl.style.width = cardWidth + 'px';
-            }
-        }
+        device.style.width = width + 'px';
+        let deviceName = btnEl.innerText;
+        header.innerText = deviceName;
     }
 
-    // --- Background Color Validation (관심매장 전용) ---
-    function checkBackgroundColor(imageFile) {
-        return new Promise((resolve) => {
-            const img = new Image();
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            
-            img.onload = function() {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-                
-                // 5px 안쪽 지점 샘플링 (좌상, 우상, 좌하, 우하)
-                const inset = 5; // 안쪽 여백
-                const corners = [
-                    ctx.getImageData(inset, inset, 1, 1).data,                          // 좌상 (5, 5)
-                    ctx.getImageData(img.width - inset, inset, 1, 1).data,              // 우상 (width-5, 5)
-                    ctx.getImageData(inset, img.height - inset, 1, 1).data,             // 좌하 (5, height-5)
-                    ctx.getImageData(img.width - inset, img.height - inset, 1, 1).data  // 우하 (width-5, height-5)
-                ];
-                
-                // 정확히 흰색(255,255,255)인지 확인 (허용 오차 없음)
-                const isWhite = corners.every(pixel => 
-                    pixel[0] === 255 && pixel[1] === 255 && pixel[2] === 255
-                );
-                
-                resolve(isWhite);
-            };
-            
-            img.onerror = function() {
-                resolve(false); // 이미지 로드 실패 시 false 반환
-            };
-            
-            img.src = URL.createObjectURL(imageFile);
-        });
-    }
-
-    // --- Background Color Validation (배너 전용: 한 곳이라도 흰색이면 에러) ---
-    function checkNonWhiteBackground(imageFile) {
-        return new Promise((resolve) => {
-            const img = new Image();
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            
-            img.onload = function() {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-                
-                // 5px 안쪽 지점 샘플링 (좌상, 우상, 좌하, 우하)
-                const inset = 5; // 안쪽 여백
-                const corners = [
-                    ctx.getImageData(inset, inset, 1, 1).data,                          // 좌상 (5, 5)
-                    ctx.getImageData(img.width - inset, inset, 1, 1).data,              // 우상 (width-5, 5)
-                    ctx.getImageData(inset, img.height - inset, 1, 1).data,             // 좌하 (5, height-5)
-                    ctx.getImageData(img.width - inset, img.height - inset, 1, 1).data  // 우하 (width-5, height-5)
-                ];
-                
-                // 한 곳이라도 흰색(오차 범위 5)이면 false (배너는 흰색 배경이면 안 됨)
-                // RGB 각 값이 250 이상이면 흰색으로 간주
-                const hasWhite = corners.some(pixel => 
-                    pixel[0] >= 250 && pixel[1] >= 250 && pixel[2] >= 250
-                );
-                
-                resolve(!hasWhite); // 흰색이 없으면 true, 있으면 false
-            };
-            
-            img.onerror = function() {
-                resolve(false); // 이미지 로드 실패 시 false 반환
-            };
-            
-            img.src = URL.createObjectURL(imageFile);
-        });
-    }
-
-    // --- Update Manual Checklist ---
-    function updateManualChecklist(type) {
-        const container = document.getElementById('manual-checkboxes');
-        container.innerHTML = ''; // 기존 체크박스 제거
-        
-        const items = checklistData[type] || [];
-        items.forEach(text => {
-            const label = document.createElement('label');
-            label.className = 'checkbox-label';
-            
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.onchange = updateFinalStatus;
-            
-            label.appendChild(checkbox);
-            label.appendChild(document.createTextNode(' ' + text));
-            container.appendChild(label);
-        });
-    }
-
-    // --- Update Final Status UI ---
+    // --- Final Summary Update ---
     function updateFinalStatus() {
         const summaryBox = document.getElementById('summary-box');
         const listContainer = document.getElementById('summary-lists');
         listContainer.innerHTML = '';
         
-        // Manual Checkboxes Validation
-        const checkboxes = document.querySelectorAll('#manual-checkboxes input[type="checkbox"]');
+        // Check Checkboxes
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
         let allChecked = true;
         checkboxes.forEach(cb => { if (!cb.checked) allChecked = false; });
 
-        let finalErrors = [...errors];
         if (!allChecked) {
-            finalErrors.push('필수 체크리스트를 모두 체크해 주세요.');
+            errors.push('수동 확인 항목(체크리스트)을 모두 확인하고 체크해주세요.');
         }
 
-        // Render Summary Lists
-        finalErrors.forEach(err => {
-            const div = document.createElement('div');
-            div.style.backgroundColor = '#FEF2F2';
-            div.style.color = 'var(--error)';
-            div.innerHTML = `<span>[불가] ${err}</span>`;
-            listContainer.appendChild(div);
-        });
-
-        warnings.forEach(warn => {
-            const div = document.createElement('div');
-            div.style.backgroundColor = '#FFFBEB';
-            div.style.color = 'var(--warning)';
-            div.innerHTML = `<span>[권장] ${warn}</span>`;
-            listContainer.appendChild(div);
-        });
-
-        // Set Final Box State
-        if (finalErrors.length > 0) {
+        if (errors.length > 0) {
             summaryBox.className = 'summary-box summary-error';
-            summaryBox.innerHTML = '<i class="material-icons">cancel</i> 가이드 기준 미달 : 미준수한 항목을 모두 수정해 주세요.';
+            summaryBox.innerHTML = '<i class="material-icons" style="vertical-align:middle;">error</i> 검수 실패: 수정이 필요한 항목이 있습니다.';
         } else if (warnings.length > 0) {
             summaryBox.className = 'summary-box summary-warning';
-            summaryBox.innerHTML = '<i class="material-icons">warning</i> 권장 기준 미달 : 업로드는 가능하지만 초과 항목 수정을 권장해요.';
+            summaryBox.innerHTML = '<i class="material-icons" style="vertical-align:middle;">warning</i> 통과 (경고 있음): 업로드 가능하나 권장 사항을 확인하세요.';
         } else {
             summaryBox.className = 'summary-box summary-success';
-            summaryBox.innerHTML = '<i class="material-icons">check_circle</i> 가이드 준수 : 업로드 할 수 있어요.';
+            summaryBox.innerHTML = '<i class="material-icons" style="vertical-align:middle;">check_circle</i> ✅ 배너 업로드 준비 완료';
         }
+
+        // Render Error List
+        errors.forEach(err => {
+            const div = document.createElement('div');
+            div.style.backgroundColor = 'rgba(229, 58, 54, 0.1)';
+            div.style.color = 'var(--error)';
+            div.innerText = `[불가] ${err}`;
+            listContainer.appendChild(div);
+        });
+
+        // Render Warning List
+        warnings.forEach(warn => {
+            const div = document.createElement('div');
+            div.style.backgroundColor = 'rgba(245, 124, 0, 0.1)';
+            div.style.color = 'var(--warning)';
+            div.innerText = `[권장] ${warn}`;
+            listContainer.appendChild(div);
+        });
     }
+
 </script>
 
 </body>
