@@ -401,7 +401,6 @@
             <div style="font-weight: 700; margin-bottom: 4px;">bora kim / product designer</div>
             <div style="margin-bottom: 12px;">커머스 프로덕트 디자인팀</div>
             <div style="opacity: 0.5;">피드백은 슬랙으로 문의주세요.</div>
-            <div style="opacity: 0.5;">kbora715@gmail.com</div>
         </div>
     </div>
 </header>
@@ -520,17 +519,17 @@
 
                 <!-- Gift Simulator -->
                 <div id="simulator-view" class="hidden">
-                    <p class="section-desc">해상도별로 텍스트 말줄임 처리를 확인하세요.</p>
+                    <p class="section-desc">뷰포트 별로 증정품 텍스트의 말줄임 처리를 확인해 주세요.</p>
                     <div class="sim-buttons" id="sim-buttons">
                         <button class="sim-btn" onclick="setSimWidth(320, this)">iPhone SE (320px)</button>
-                        <button class="sim-btn active" onclick="setSimWidth(360, this)">기준 해상도 (360px)</button>
+                        <button class="sim-btn active" onclick="setSimWidth(360, this)">기준 뷰포트 (360px)</button>
                         <button class="sim-btn" onclick="setSimWidth(375, this)">iPhone 11 Pro (375px)</button>
                         <button class="sim-btn" onclick="setSimWidth(430, this)">iPhone 16 Pro Max (430px)</button>
                         <button class="sim-btn" onclick="setSimWidth(834, this)">iPad Pro (834px)</button>
                     </div>
                     <div class="sim-wrapper">
                         <div class="sim-device" id="sim-device" style="width: 360px;">
-                            <div class="sim-header" id="sim-header-text">기준 해상도 (360px)</div>
+                            <div class="sim-header" id="sim-header-text">기준 뷰포트 (360px)</div>
                             
                             <!-- 프로모션 시뮬레이터 (기본) -->
                             <div class="sim-content" id="promo-sim-content">
@@ -625,7 +624,7 @@
 
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // --- State Variables ---
     let currentType = 'banner'; // 'banner' or 'gift'
     let uploadedFile = null;
@@ -715,7 +714,7 @@
         // Update Helper Text
         document.getElementById('upload-desc').innerText = currentType === 'banner' 
             ? "가로 690px, 세로 516px 규격의 이미지를 업로드해주세요." 
-            : "가로 640px, 세로 640px 규격의 이미지를 업로드해주세요.";
+            : "가로 800px, 세로 800px 규격의 이미지를 업로드해주세요.";
 
         // Toggle Left Panel Input Section
         if(type === 'gift-interest' || type === 'gift-sheet') {
@@ -1026,11 +1025,11 @@
                 });
             }
 
-            if (imgWidth === 640 && imgHeight === 640) {
-                addResultItem(true, "이미지 해상도", `정상 (640x640px)`);
+            if (imgWidth === 800 && imgHeight === 800) {
+                addResultItem(true, "이미지 해상도", `정상 (800x800px)`);
             } else {
                 addResultItem(false, "이미지 해상도", `규격 오류 (${imgWidth}x${imgHeight}px)`, false);
-                errors.push(`이미지 사이즈는 640x640px(정방형)이어야 해요. (현재: ${imgWidth}x${imgHeight}px)`);
+                errors.push(`이미지 사이즈는 800x800px(정방형)이어야 해요. (현재: ${imgWidth}x${imgHeight}px)`);
             }
             validateGiftText(); // Run text validation to update lists
         }
@@ -1264,13 +1263,13 @@
         // Set Final Box State
         if (finalErrors.length > 0) {
             summaryBox.className = 'summary-box summary-error';
-            summaryBox.innerHTML = '<i class="material-icons">cancel</i> 가이드 기준 미달 : 미준수한 항목을 모두 수정해 주세요.';
+            summaryBox.innerHTML = '<i class="material-icons">cancel</i> 가이드 기준 미달 : 미준수한 항목 수정 필요';
         } else if (warnings.length > 0) {
             summaryBox.className = 'summary-box summary-warning';
-            summaryBox.innerHTML = '<i class="material-icons">warning</i> 권장 기준 미달 : 업로드는 가능하지만 초과 항목 수정을 권장해요.';
+            summaryBox.innerHTML = '<i class="material-icons">warning</i> 권장 기준 미달 : 업로드 가능';
         } else {
             summaryBox.className = 'summary-box summary-success';
-            summaryBox.innerHTML = '<i class="material-icons">check_circle</i> 가이드 준수 : 업로드 준비가 완료되었습니다.';
+            summaryBox.innerHTML = '<i class="material-icons">check_circle</i> 가이드 모두 준수 : 업로드 가능';
         }
     }
 
@@ -1278,4 +1277,3 @@
 
 </body>
 </html>
-        
